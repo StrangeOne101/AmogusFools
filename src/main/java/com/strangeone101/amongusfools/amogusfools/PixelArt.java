@@ -24,8 +24,6 @@ public class PixelArt {
             "  ###   ##   "
     };
 
-    //BLACK_CONCRETE, BLACK_CONCRETE, BLACK_CONCRETE
-
     public static Material[][] ART_3D;
 
     public static final int X_LENGTH = 13;

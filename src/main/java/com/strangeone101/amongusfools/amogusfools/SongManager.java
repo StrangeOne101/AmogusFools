@@ -1,12 +1,15 @@
 package com.strangeone101.amongusfools.amogusfools;
 
 import com.projectkorra.projectkorra.ProjectKorra;
-import com.xxmicloxx.NoteBlockAPI.model.Song;
-import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
-import com.xxmicloxx.NoteBlockAPI.songplayer.SongPlayer;
-import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import static org.bukkit.Sound.*;
+import net.raphimc.noteblocklib.parser.Note;
+import net.raphimc.noteblocklib.parser.nbs.NBSParser;
+import net.raphimc.noteblocklib.parser.nbs.NBSSong;
+import net.raphimc.noteblocklib.player.ISongPlayerCallback;
+import net.raphimc.noteblocklib.player.SongPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,17 +25,17 @@ import java.util.Enumeration;
 
 public class SongManager {
 
-    private static Song song;
+    private static NBSSong song;
     private static final File localNBS = new File(ProjectKorra.plugin.getDataFolder(), "Abilities/amongus.nbs");
 
    static {
         if (!localNBS.exists()) {
             Bukkit.getScheduler().runTaskAsynchronously(ProjectKorra.plugin, () -> {
                 downloadNBS();
-                song = NBSDecoder.parse(localNBS);
+                song = NBSParser.parseFile(localNBS);
                 ProjectKorra.log.info("Successfully downloaded amogus.nbs!");
             });
-        } else song = NBSDecoder.parse(localNBS);
+        } else song = NBSParser.parseFile(localNBS);
     }
 
     /*private InputStream readFile() {
@@ -86,13 +89,57 @@ public class SongManager {
         }
     }
 
+    public static class SongCallback implements ISongPlayerCallback {
+
+        private Location location;
+        private static final Sound[] INSTRUMENTS = {
+                BLOCK_NOTE_BLOCK_HARP,
+                BLOCK_NOTE_BLOCK_BASS,
+                BLOCK_NOTE_BLOCK_BASEDRUM,
+                BLOCK_NOTE_BLOCK_SNARE,
+                BLOCK_NOTE_BLOCK_HAT,
+                BLOCK_NOTE_BLOCK_GUITAR,
+                BLOCK_NOTE_BLOCK_FLUTE,
+                BLOCK_NOTE_BLOCK_BELL,
+                BLOCK_NOTE_BLOCK_CHIME,
+                BLOCK_NOTE_BLOCK_XYLOPHONE,
+                BLOCK_NOTE_BLOCK_IRON_XYLOPHONE,
+                BLOCK_NOTE_BLOCK_COW_BELL,
+                BLOCK_NOTE_BLOCK_DIDGERIDOO,
+                BLOCK_NOTE_BLOCK_BIT,
+                BLOCK_NOTE_BLOCK_BANJO,
+                BLOCK_NOTE_BLOCK_PLING};
+
+
+        public SongCallback(Location location) {
+            this.location = location;
+        }
+
+        public Sound getInstrument(byte b) {
+            return INSTRUMENTS[b % 16];
+        }
+
+        public float getPitch(byte b) {
+            return (float)(Math.pow(2, (b - 45) / 12F));
+        }
+
+        @Override
+        public void playNote(Note note) {
+            this.location.getWorld().playSound(location, getInstrument(note.getInstrument()), 1.0F, getPitch(note.getKey()));
+        }
+
+        public Location getLocation() {
+            return location;
+        }
+
+        public void setLocation(Location location) {
+            this.location = location;
+        }
+    }
+
     public SongPlayer playAt(Location location) {
-        PositionSongPlayer songPlayer = new PositionSongPlayer(song);
-        songPlayer.setTargetLocation(location);
-        songPlayer.setTick((short)0);
-        songPlayer.setDistance(50);
-        songPlayer.setPlaying(true);
-        Bukkit.getOnlinePlayers().forEach(songPlayer::addPlayer);
+        SongPlayer songPlayer = new SongPlayer(song, new SongCallback(location));
+        songPlayer.play();
         return songPlayer;
     }
 }

@@ -49,14 +49,6 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
-            <resource>
-                <directory>src/main/java/com/strangeone101/amongusfools/amogusfools</directory>
-                <includes>
-                    <include>theme.class</include>
-                </includes>
-                <filtering>true</filtering>
-                <targetPath>com/strangeone101/amongusfools/amogusfools</targetPath>
-            </resource>
         </resources>
     </build>
 
@@ -89,9 +81,26 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.koca2000</groupId>
-            <artifactId>NoteBlockAPI</artifactId>
-            <version>1.6.1</version>
+            <groupId>com.github.RaphiMC</groupId>
+            <artifactId>NoteBlockLib</artifactId>
+            <version>6f2b0a5c73</version>
+        </dependency>
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>8.5.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

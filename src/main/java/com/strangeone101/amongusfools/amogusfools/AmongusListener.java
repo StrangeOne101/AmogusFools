@@ -10,7 +10,7 @@ public class AmongusListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         BendingPlayer bendingPlayer = BendingPlayer.getBendingPlayer(event.getPlayer());
-        if (bendingPlayer.getBoundAbilityName().equals("Sus")) {
+        if (bendingPlayer.getBoundAbility().getClass().equals(AmogusFools.class)) {
             new AmogusFools(event.getPlayer());
         }
     }
