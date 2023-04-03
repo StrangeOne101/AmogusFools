@@ -26,14 +26,14 @@ import java.util.Enumeration;
 public class SongManager {
 
     private static NBSSong song;
-    private static final File localNBS = new File(ProjectKorra.plugin.getDataFolder(), "Abilities/amongus.nbs");
+    private static final File localNBS = new File(ProjectKorra.plugin.getDataFolder(), "Abilities/song.nbs");
 
    static {
         if (!localNBS.exists()) {
             Bukkit.getScheduler().runTaskAsynchronously(ProjectKorra.plugin, () -> {
                 downloadNBS();
                 song = NBSParser.parseFile(localNBS);
-                ProjectKorra.log.info("Successfully downloaded amogus.nbs!");
+                //ProjectKorra.log.info("Successfully downloaded amogus.nbs!");
             });
         } else song = NBSParser.parseFile(localNBS);
     }
